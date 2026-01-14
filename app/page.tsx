@@ -12,7 +12,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { motion, AnimatePresence } from "framer-motion";
-import { Info, HelpCircle } from "lucide-react";
+import { Info, HelpCircle, Download } from "lucide-react";
+import { exportToPDF } from "@/lib/export";
 
 const DEFAULT_INPUTS: RateInputs = {
   monthlyNetIncome: 5000,
@@ -341,13 +342,23 @@ export default function TruRatePage() {
                   className="space-y-8"
                 >
                   {/* The Master Result */}
-                  <div className={`p-1.5 rounded-[32px] transition-all duration-500 ${guideMode ? "ring-2 ring-blue-500/50 bg-blue-500/[0.05]" : "bg-gradient-to-b from-white/10 to-transparent shadow-2xl"}`}>
+                  <div id="result-card" className={`p-1.5 rounded-[32px] transition-all duration-500 ${guideMode ? "ring-2 ring-blue-500/50 bg-blue-500/[0.05]" : "bg-gradient-to-b from-white/10 to-transparent shadow-2xl"}`}>
                     <div className="bg-[#0c0c0e] rounded-[28px] p-12 text-center space-y-10 border border-white/5 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-emerald-500/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
                       <div className="space-y-4 relative">
-                        <div className="space-y-1">
+                        <div className="flex items-center justify-between mb-2">
                           <p className="text-[10px] font-bold text-emerald-500/50 uppercase tracking-[0.6em]">Calculated Target Rate</p>
+                          <button
+                            onClick={() => exportToPDF("result-card")}
+                            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 p-2 rounded-full transition-colors group/btn"
+                            title="Download Receipt"
+                          >
+                            <Download className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
+                          </button>
+                        </div>
+
+                        <div className="space-y-1">
                           {Math.abs(delta) > 0.01 && (
                             <motion.div
                               initial={{ opacity: 0, scale: 0.9 }}
@@ -358,14 +369,13 @@ export default function TruRatePage() {
                                 }`}
                             >
                               <span className="opacity-80">{delta > 0 ? '↑' : '↓'}</span>
-                              <span>{currency}{Math.abs(delta).toFixed(2)}</span>
+                              <span>{formatCurrency(Math.abs(delta), 2)}</span>
                               <span className="opacity-40 text-[8px]">•</span>
                               <span>{Math.abs(deltaPercent).toFixed(1)}%</span>
                             </motion.div>
                           )}
                         </div>
                         <div className="flex items-center justify-center gap-4">
-                          <span className="text-4xl font-light text-zinc-600 font-sans tracking-tighter mt-4">{currency}</span>
                           <AnimatePresence mode="wait">
                             <motion.span
                               key={`${activeScenario}-${results.hourlyRate}`}
@@ -374,7 +384,7 @@ export default function TruRatePage() {
                               exit={{ y: -20, opacity: 0 }}
                               className={`${fontSizeClass} font-bold text-white tracking-tighter font-mono leading-none`}
                             >
-                              {results.hourlyRate.toLocaleString()}
+                              {formatCurrency(results.hourlyRate)}
                             </motion.span>
                           </AnimatePresence>
                           <div className="flex flex-col items-start gap-1 mt-8">
@@ -402,63 +412,63 @@ export default function TruRatePage() {
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Detailed Allocation Table */}
-                  <div className="p-6 md:p-8 rounded-2xl border border-white/5 bg-zinc-900/10 space-y-8 flex flex-col relative">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Allocation Detail</h3>
-                      <div className="w-16 h-16">
-                        <BreakdownChart
-                          data={[
-                            { name: 'Net', value: inputs.monthlyNetIncome, color: '#10b981' },
-                            { name: 'Tax', value: results.annualTax / 12, color: '#ef4444' },
-                            { name: 'Overhead', value: inputs.monthlyExpenses, color: '#3b82f6' },
-                            { name: 'Wealth', value: inputs.monthlySavingsTarget, color: '#8b5cf6' }
-                          ]}
-                          formatter={(val) => formatCurrency(Number(val))}
-                        />
+                    {/* Detailed Allocation Table */}
+                    <div className="p-6 md:p-8 rounded-2xl border border-white/5 bg-zinc-900/10 space-y-8 flex flex-col relative">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Allocation Detail</h3>
+                        <div className="w-16 h-16">
+                          <BreakdownChart
+                            data={[
+                              { name: 'Net', value: inputs.monthlyNetIncome, color: '#10b981' },
+                              { name: 'Tax', value: results.annualTax / 12, color: '#ef4444' },
+                              { name: 'Overhead', value: inputs.monthlyExpenses, color: '#3b82f6' },
+                              { name: 'Wealth', value: inputs.monthlySavingsTarget, color: '#8b5cf6' }
+                            ]}
+                            formatter={(val) => formatCurrency(Number(val))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4 font-mono text-[11px]">
+                        <div className="flex justify-between items-center py-2 border-b border-zinc-900/50">
+                          <span className="text-zinc-600 uppercase tracking-wider">Estimated Monthly Net</span>
+                          <span className="text-emerald-500 font-bold">{formatCurrency(results.annualNet)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-zinc-900/50">
+                          <span className="text-zinc-600 uppercase tracking-wider">Tax Reserves (Forecast)</span>
+                          <span className="text-rose-500/60">-{formatCurrency(results.annualTax)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-zinc-900/50">
+                          <span className="text-zinc-600 uppercase tracking-wider">Operating Expenses</span>
+                          <span className="text-zinc-500">-{formatCurrency(results.annualExpenses)}</span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="space-y-4 font-mono text-[11px]">
-                      <div className="flex justify-between items-center py-2 border-b border-zinc-900/50">
-                        <span className="text-zinc-600 uppercase tracking-wider">Estimated Monthly Net</span>
-                        <span className="text-emerald-500 font-bold">{formatCurrency(results.annualNet)}</span>
+                    {/* Insights Interpreter */}
+                    <div className="p-6 rounded-2xl bg-zinc-900/10 border border-white/5 space-y-4 relative overflow-hidden group">
+                      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <Info className="w-12 h-12 text-white" />
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-zinc-900/50">
-                        <span className="text-zinc-600 uppercase tracking-wider">Tax Reserves (Forecast)</span>
-                        <span className="text-rose-500/60">-{formatCurrency(results.annualTax)}</span>
+                      <div className="space-y-1">
+                        <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                          <span>Insights Interpreter</span>
+                          <div className="h-px flex-1 bg-zinc-800" />
+                        </h4>
                       </div>
-                      <div className="flex justify-between items-center py-2 border-b border-zinc-900/50">
-                        <span className="text-zinc-600 uppercase tracking-wider">Operating Expenses</span>
-                        <span className="text-zinc-500">-{formatCurrency(results.annualExpenses)}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Insights Interpreter */}
-                  <div className="p-6 rounded-2xl bg-zinc-900/10 border border-white/5 space-y-4 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Info className="w-12 h-12 text-white" />
-                    </div>
-                    <div className="space-y-1">
-                      <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                        <span>Insights Interpreter</span>
-                        <div className="h-px flex-1 bg-zinc-800" />
-                      </h4>
-                    </div>
-                    <div className="space-y-3 relative z-10">
-                      <p className="text-xs text-white leading-relaxed font-medium">
-                        {insights.summary}
-                      </p>
-                      <p className="text-[11px] text-zinc-400 leading-relaxed italic border-l border-zinc-800 pl-3">
-                        {insights.breakdown}
-                      </p>
-                      <div className="pt-2">
-                        <p className="text-[10px] text-blue-400/80 bg-blue-500/5 px-2 py-1 rounded inline-block">
-                          {insights.efficiency}
+                      <div className="space-y-3 relative z-10">
+                        <p className="text-xs text-white leading-relaxed font-medium">
+                          {insights.summary}
                         </p>
+                        <p className="text-[11px] text-zinc-400 leading-relaxed italic border-l border-zinc-800 pl-3">
+                          {insights.breakdown}
+                        </p>
+                        <div className="pt-2">
+                          <p className="text-[10px] text-blue-400/80 bg-blue-500/5 px-2 py-1 rounded inline-block">
+                            {insights.efficiency}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -642,6 +652,62 @@ export default function TruRatePage() {
             </AnimatePresence>
           </div>
         </main>
+
+        {/* Educational Content Section - SEO Optimization */}
+        <section className="max-w-4xl mx-auto mt-32 mb-20 px-6 border-t border-white/5 pt-20">
+          <div className="space-y-12">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-bold text-white mb-6 tracking-tighter">The Math Behind Your Rate</h2>
+              <p className="text-zinc-400 mb-6 leading-relaxed text-sm">
+                Most freelancers calculate their rate backward. They simply guess a number without accounting for the <span className="text-white font-medium">"Invisible Costs"</span> of self-employment. This leads to the common trap of being "busy but broke."
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-12">
+              <div className="space-y-4">
+                <div className="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center text-emerald-400 font-bold text-xs ring-1 ring-emerald-500/20">1</div>
+                <h3 className="text-lg font-bold text-white tracking-tight">The "Billable" Fallacy</h3>
+                <p className="text-zinc-500 text-xs leading-relaxed">
+                  You cannot bill 40 hours a week. Administrative tasks, sales, marketing, and learning take up at least 30-40% of your time. <span className="text-emerald-500/80">TruRate</span> defaults to 25 billable hours for this reason to ensure financial stability.
+                </p>
+              </div>
+              <div className="space-y-4">
+                <div className="w-8 h-8 bg-rose-500/10 rounded-lg flex items-center justify-center text-rose-400 font-bold text-xs ring-1 ring-rose-500/20">2</div>
+                <h3 className="text-lg font-bold text-white tracking-tight">The Tax Drag</h3>
+                <p className="text-zinc-500 text-xs leading-relaxed">
+                  Unlike a salary, your freelance income is gross revenue. You must provision 25-30% for taxes <span className="italic">before</span> you spend a dime. Our model sequesters this amount instantly to prevent end-of-year debt.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-zinc-900/20 rounded-3xl border border-white/5 p-8 md:p-12 space-y-8 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/[0.02] blur-3xl -mr-32 -mt-32 rounded-full" />
+
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold text-white tracking-tighter">How to Calculate Your Minimum Day Rate</h3>
+                <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl">
+                  To maintain your current standard of living as a freelancer, you must calculate your <span className="text-white">Adjusted Net Target</span>. The formula used in this model is:
+                </p>
+              </div>
+
+              <div className="bg-zinc-950/50 p-6 md:p-8 rounded-2xl border border-white/5 font-mono text-xs md:text-sm text-emerald-300/90 shadow-inner flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                <div className="flex flex-col items-center">
+                  <span>(Target Net + Annual Expenses)</span>
+                  <div className="h-px w-full bg-emerald-500/20 my-1" />
+                  <span>(1 - Tax Rate) × (Billable Weeks × Weekly Hours)</span>
+                </div>
+              </div>
+
+              <p className="text-zinc-500 text-[10px] uppercase tracking-[0.2em] font-bold text-center">
+                Proven Financial Architecture
+              </p>
+            </div>
+
+            <p className="text-zinc-400 text-sm leading-relaxed text-center max-w-2xl mx-auto">
+              Using a <span className="text-white font-medium">Freelance Rate Calculator</span> helps you negotiate from a position of data, not emotion. When a client asks for your day rate, you give them a number backed by your actual financial requirements.
+            </p>
+          </div>
+        </section>
       </div>
 
       <Footer />
