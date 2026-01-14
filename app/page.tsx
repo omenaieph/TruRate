@@ -341,80 +341,83 @@ export default function TruRatePage() {
                   exit={{ opacity: 0, x: -10 }}
                   className="space-y-8"
                 >
-                  {/* The Master Result */}
-                  <div id="result-card" className={`p-1.5 rounded-[32px] transition-all duration-500 ${guideMode ? "ring-2 ring-blue-500/50 bg-blue-500/[0.05]" : "bg-gradient-to-b from-white/10 to-transparent shadow-2xl"}`}>
-                    <div className="bg-[#0c0c0e] rounded-[28px] p-12 text-center space-y-10 border border-white/5 relative overflow-hidden group">
-                      <div className="absolute inset-0 bg-emerald-500/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                  {/* Result Export Wrapper */}
+                  <div id="result-card" className="space-y-12">
+                    {/* The Master Result Card */}
+                    <div className={`p-1.5 rounded-[32px] transition-all duration-500 ring-1 ring-white/[0.05] ${guideMode ? "ring-2 ring-blue-500/50 bg-blue-500/[0.05]" : "bg-gradient-to-b from-white/10 to-transparent shadow-2xl"}`}>
+                      <div className="bg-[#0c0c0e] rounded-[28px] p-12 text-center space-y-10 border border-white/5 relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-emerald-500/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
-                      <div className="space-y-4 relative">
-                        <div className="flex items-center justify-between mb-2">
-                          <p className="text-[10px] font-bold text-emerald-500/50 uppercase tracking-[0.6em]">Calculated Target Rate</p>
-                          <button
-                            onClick={() => exportToPDF("result-card")}
-                            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 p-2 rounded-full transition-colors group/btn"
-                            title="Download Receipt"
-                          >
-                            <Download className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
-                          </button>
-                        </div>
-
-                        <div className="space-y-1">
-                          {Math.abs(delta) > 0.01 && (
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.9 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.05em] px-3 py-1 rounded-full border shadow-lg backdrop-blur-md ${delta > 0
-                                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-                                }`}
+                        <div className="space-y-4 relative">
+                          <div className="flex items-center justify-between mb-2">
+                            <p className="text-[10px] font-bold text-emerald-500/50 uppercase tracking-[0.6em]">Calculated Target Rate</p>
+                            <button
+                              onClick={() => exportToPDF("result-card")}
+                              className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 p-2 rounded-full transition-colors group/btn"
+                              title="Download Receipt"
                             >
-                              <span className="opacity-80">{delta > 0 ? '↑' : '↓'}</span>
-                              <span>{formatCurrency(Math.abs(delta), 2)}</span>
-                              <span className="opacity-40 text-[8px]">•</span>
-                              <span>{Math.abs(deltaPercent).toFixed(1)}%</span>
-                            </motion.div>
-                          )}
-                        </div>
-                        <div className="flex items-center justify-center gap-4">
-                          <AnimatePresence mode="wait">
-                            <motion.span
-                              key={`${activeScenario}-${results.hourlyRate}`}
-                              initial={{ y: 20, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              exit={{ y: -20, opacity: 0 }}
-                              className={`${fontSizeClass} font-bold text-white tracking-tighter font-mono leading-none`}
-                            >
-                              {formatCurrency(results.hourlyRate)}
-                            </motion.span>
-                          </AnimatePresence>
-                          <div className="flex flex-col items-start gap-1 mt-8">
-                            <span className="text-xs font-semibold text-zinc-600 uppercase tracking-widest">/ hr</span>
+                              <Download className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
+                            </button>
                           </div>
-                        </div>
-                      </div>
 
-                      <div className="flex items-center justify-center gap-10 border-t border-white/5 pt-10 mt-4 relative">
-                        <div className="text-center group/rate relative">
-                          <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-1">Standard Day</p>
-                          <div className="flex flex-col items-center">
-                            <p className="text-xl font-semibold text-zinc-300 font-mono tracking-tight">{formatCurrency(results.dayRate)}</p>
+                          <div className="space-y-1">
                             {Math.abs(delta) > 0.01 && (
-                              <p className="text-[9px] font-bold text-white/10 font-mono absolute -bottom-4 tracking-tight">
-                                {formatCurrency(alternateResults.dayRate)}
-                              </p>
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.05em] px-3 py-1 rounded-full border shadow-lg backdrop-blur-md ${delta > 0
+                                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                                  : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                                  }`}
+                              >
+                                <span className="opacity-80">{delta > 0 ? '↑' : '↓'}</span>
+                                <span>{formatCurrency(Math.abs(delta), 2)}</span>
+                                <span className="opacity-40 text-[8px]">•</span>
+                                <span>{Math.abs(deltaPercent).toFixed(1)}%</span>
+                              </motion.div>
                             )}
                           </div>
+                          <div className="flex items-center justify-center gap-4">
+                            <AnimatePresence mode="wait">
+                              <motion.span
+                                key={`${activeScenario}-${results.hourlyRate}`}
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -20, opacity: 0 }}
+                                className={`${fontSizeClass} font-bold text-white tracking-tighter font-mono leading-none`}
+                              >
+                                {formatCurrency(results.hourlyRate)}
+                              </motion.span>
+                            </AnimatePresence>
+                            <div className="flex flex-col items-start gap-1 mt-8">
+                              <span className="text-xs font-semibold text-zinc-600 uppercase tracking-widest">/ hr</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="w-px h-8 bg-zinc-900" />
-                        <div className="text-center">
-                          <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-1">Full Capacity</p>
-                          <p className="text-xl font-semibold text-zinc-300 font-mono tracking-tight">{formatCurrency(results.monthlyGross)}</p>
+
+                        <div className="flex items-center justify-center gap-10 border-t border-white/5 pt-10 mt-4 relative">
+                          <div className="text-center group/rate relative">
+                            <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-1">Standard Day</p>
+                            <div className="flex flex-col items-center">
+                              <p className="text-xl font-semibold text-zinc-300 font-mono tracking-tight">{formatCurrency(results.dayRate)}</p>
+                              {Math.abs(delta) > 0.01 && (
+                                <p className="text-[9px] font-bold text-white/10 font-mono absolute -bottom-4 tracking-tight">
+                                  {formatCurrency(alternateResults.dayRate)}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="w-px h-8 bg-zinc-900" />
+                          <div className="text-center">
+                            <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-1">Full Capacity</p>
+                            <p className="text-xl font-semibold text-zinc-300 font-mono tracking-tight">{formatCurrency(results.monthlyGross)}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
 
                     {/* Detailed Allocation Table */}
-                    <div className="p-6 md:p-8 rounded-2xl border border-white/5 bg-zinc-900/10 space-y-8 flex flex-col relative">
+                    <div className={`p-6 md:p-8 rounded-2xl border transition-all duration-500 space-y-8 flex flex-col relative shadow-xl shadow-emerald-500/[0.01] ${guideMode ? "ring-2 ring-blue-500/50 bg-blue-500/[0.05]" : "border-white/5 bg-zinc-900/10"}`}>
                       <div className="flex items-center justify-between">
                         <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Allocation Detail</h3>
                         <div className="w-16 h-16">
@@ -447,7 +450,7 @@ export default function TruRatePage() {
                     </div>
 
                     {/* Insights Interpreter */}
-                    <div className="p-6 rounded-2xl bg-zinc-900/10 border border-white/5 space-y-4 relative overflow-hidden group">
+                    <div className={`p-6 rounded-2xl border transition-all duration-500 space-y-4 relative overflow-hidden group shadow-xl shadow-blue-500/[0.01] ${guideMode ? "ring-2 ring-blue-500/50 bg-blue-500/[0.05]" : "bg-zinc-900/10 border-white/5"}`}>
                       <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         <Info className="w-12 h-12 text-white" />
                       </div>

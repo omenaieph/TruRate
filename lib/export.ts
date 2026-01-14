@@ -1,4 +1,4 @@
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
 
 export const exportToPDF = async (elementId: string, fileName: string = "TruRate-Receipt.pdf") => {
@@ -6,23 +6,32 @@ export const exportToPDF = async (elementId: string, fileName: string = "TruRate
     if (!element) return;
 
     try {
-        const canvas = await html2canvas(element, {
+        // html-to-image is much more robust for modern CSS (oklch, backdrop-filter)
+        const dataUrl = await toPng(element, {
+            quality: 1.0,
+            pixelRatio: 2, // High resolution
             backgroundColor: "#09090b",
-            scale: 2,
-            logging: false,
-            useCORS: true,
+            style: {
+                // Ensure the cloned element doesn't have clipping or scrollbars
+                overflow: 'visible'
+            }
         });
 
-        const imgData = canvas.toDataURL("image/png");
+        // Use jsPDF to wrap the high-res PNG into a PDF
         const pdf = new jsPDF({
             orientation: "portrait",
             unit: "px",
-            format: [canvas.width, canvas.height],
+            format: "a4",
         });
 
-        pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+        const imgProps = pdf.getImageProperties(dataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(fileName);
     } catch (error) {
-        console.error("PDF Export failed:", error);
+        console.error("Modern PDF Export failed:", error);
+        alert("Export failed using modern engine. Please try again or check settings.");
     }
 };
