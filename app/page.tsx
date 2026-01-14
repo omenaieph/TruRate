@@ -693,11 +693,21 @@ export default function TruRatePage() {
                 </p>
               </div>
 
-              <div className="bg-zinc-950/50 p-6 md:p-8 rounded-2xl border border-white/5 font-mono text-xs md:text-sm text-emerald-300/90 shadow-inner flex flex-col md:flex-row items-center justify-center gap-4 text-center">
-                <div className="flex flex-col items-center">
-                  <span>(Target Net + Annual Expenses)</span>
-                  <div className="h-px w-full bg-emerald-500/20 my-1" />
-                  <span>(1 - Tax Rate) × (Billable Weeks × Weekly Hours)</span>
+              <div className="bg-zinc-950/80 border border-emerald-500/10 rounded-2xl p-8 md:p-12 text-center backdrop-blur-sm shadow-2xl relative group">
+                <div className="absolute inset-0 bg-emerald-500/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="text-emerald-400 font-mono text-base md:text-lg font-medium tracking-tight relative z-10">
+                  <span className="block mb-6 text-zinc-500 text-[10px] uppercase tracking-[0.3em] border-b border-white/5 pb-2 w-max mx-auto font-sans">The Rate Architecture</span>
+
+                  <div className="flex flex-col items-center justify-center gap-4">
+                    <div className="border-b border-emerald-500/30 px-6 pb-2">
+                      Target Net + Annual Expenses
+                    </div>
+                    <div className="flex items-center justify-center gap-6 px-6">
+                      <span className="text-zinc-500 font-sans text-xs">(1 - Tax Rate)</span>
+                      <span className="text-emerald-500/40 font-sans text-sm">×</span>
+                      <span className="text-zinc-500 font-sans text-xs">(Billable Weeks × Weekly Hours)</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
