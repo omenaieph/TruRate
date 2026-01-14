@@ -695,17 +695,17 @@ export default function TruRatePage() {
 
               <div className="bg-zinc-950/80 border border-emerald-500/10 rounded-2xl p-8 md:p-12 text-center backdrop-blur-sm shadow-2xl relative group">
                 <div className="absolute inset-0 bg-emerald-500/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="text-emerald-400 font-mono text-base md:text-lg font-medium tracking-tight relative z-10">
-                  <span className="block mb-6 text-zinc-500 text-[10px] uppercase tracking-[0.3em] border-b border-white/5 pb-2 w-max mx-auto font-sans">The Rate Architecture</span>
+                <div className="font-mono text-base md:text-lg font-medium tracking-tight relative z-10 text-emerald-400/90">
+                  <span className="block mb-8 text-zinc-500 text-[10px] uppercase tracking-[0.4em] border-b border-white/5 pb-2 w-max mx-auto font-sans">The Rate Architecture</span>
 
-                  <div className="flex flex-col items-center justify-center gap-4">
-                    <div className="border-b border-emerald-500/30 px-6 pb-2">
+                  <div className="flex flex-col items-center justify-center gap-6">
+                    <div className="border-b-2 border-emerald-500/20 px-8 pb-3 text-lg md:text-xl">
                       Target Net + Annual Expenses
                     </div>
-                    <div className="flex items-center justify-center gap-6 px-6">
-                      <span className="text-zinc-500 font-sans text-xs">(1 - Tax Rate)</span>
-                      <span className="text-emerald-500/40 font-sans text-sm">×</span>
-                      <span className="text-zinc-500 font-sans text-xs">(Billable Weeks × Weekly Hours)</span>
+                    <div className="flex items-center justify-center gap-6 px-6 text-zinc-400 text-sm md:text-base">
+                      <span className="font-sans">(1 - Tax Rate)</span>
+                      <span className="text-emerald-500/40 font-sans text-lg">×</span>
+                      <span className="font-sans">(Billable Weeks × Weekly Hours)</span>
                     </div>
                   </div>
                 </div>
