@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TruRate | Universal Professional Rate Modeler
 
-## Getting Started
+**TruRate** is a high-precision financial modeling platform designed for elite professionals, consultants, and private practices. It moves beyond simple rate calculators to provide deep, institutional-grade analysis of your income architecture.
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Universal Professional Benchmarks**: Specialized rate databases for Tech, Finance, Law, Medicine, and Creative niches.
+- **Dual Scenario Engine**: Compare two different financial models side-by-side (Scenario A vs. Scenario B) with real-time delta tracking.
+- **Guide Mode**: An interactive onboarding layer that demystifies complex financial modeling for new users.
+- **Insights Interpreter**: A natural language processing layer that translates raw math into actionable advice and efficiency audits.
+- **Wealth Accelerator**: Predictive modeling for long-term savings and investment targets.
+- **Practice Efficiency (Hidden Drain)**: Audit your unbilled overhead to find your true "Effective Rate."
+- **Institutional Aesthetic**: A premium, "Stripe/Linear" inspired design language built for professionals.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: [Next.js 14+](https://nextjs.org/) (App Router)
+- **Styling**: Vanilla Tailwind CSS + Glassmorphism
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **State Management**: React Context & Hooks with LocalStorage persistence
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Charts**: [Recharts](https://recharts.org/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏁 Getting Started
 
-## Learn More
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Build for Production**:
+   ```bash
+   npm run build
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📄 License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Project for internal professional use.
