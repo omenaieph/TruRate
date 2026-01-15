@@ -13,7 +13,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://truerate.app"),
+  metadataBase: new URL("https://trueratecalculator.org"),
   title: {
     default: "TruRate | Universal Professional Rate Modeler",
     template: "%s | TruRate"
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TruRate | Universal Rate Modeler",
     description: "World-class financial modeling for high-stakes professionals.",
-    url: "https://truerate.app",
+    url: "https://trueratecalculator.org",
     siteName: "TruRate",
     locale: "en_US",
     type: "website",
