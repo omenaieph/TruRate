@@ -19,13 +19,14 @@ export function AnalysisTabs({ active, onChange }: AnalysisTabsProps) {
             <motion.div
                 layoutId="active-analysis-tab"
                 className="absolute inset-1 bg-white/5 border border-white/10 rounded-lg shadow-sm"
-                animate={{
-                    left: `${(tabs.findIndex(t => t.id === active) / tabs.length) * 100}%`,
-                    width: `${100 / tabs.length}%`,
-                    x: active === 'analysis' ? 4 : active === 'strategy' ? 1 : -2, // Micro-adjustments for alignment
-                }}
                 transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-                style={{ width: `calc(${100 / tabs.length}% - 8px)` }}
+                style={{
+                    width: `calc(${100 / tabs.length}% - 8px)`,
+                    left: "4px"
+                }}
+                animate={{
+                    x: `${tabs.findIndex(t => t.id === active) * 100}%`,
+                }}
             />
 
             {tabs.map((tab) => (

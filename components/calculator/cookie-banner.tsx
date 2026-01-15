@@ -7,14 +7,23 @@ export function CookieBanner() {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        const consent = localStorage.getItem("cookie-consent");
-        if (!consent) {
+        try {
+            const consent = localStorage.getItem("cookie-consent");
+            if (!consent) {
+                setIsVisible(true);
+            }
+        } catch (e) {
+            // Fallback for private modes where localStorage is blocked
             setIsVisible(true);
         }
     }, []);
 
     const acceptCookies = () => {
-        localStorage.setItem("cookie-consent", "true");
+        try {
+            localStorage.setItem("cookie-consent", "true");
+        } catch (e) {
+            // Silently ignore
+        }
         setIsVisible(false);
     };
 
@@ -27,7 +36,7 @@ export function CookieBanner() {
                     exit={{ y: 100, opacity: 0 }}
                     className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-xl"
                 >
-                    <div className="bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl ring-1 ring-white/5 flex flex-col md:flex-row items-center gap-6">
+                    <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-2xl ring-1 ring-white/5 flex flex-col md:flex-row items-center gap-6">
                         <div className="flex-1 space-y-1">
                             <h4 className="text-sm font-bold text-white tracking-tight">Financial Privacy</h4>
                             <p className="text-xs text-zinc-400 leading-relaxed font-sans">

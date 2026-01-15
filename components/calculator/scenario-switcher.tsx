@@ -9,15 +9,18 @@ interface ScenarioSwitcherProps {
 
 export function ScenarioSwitcher({ active, onChange }: ScenarioSwitcherProps) {
     return (
-        <div className="flex p-1 bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-2xl w-fit relative overflow-hidden shadow-2xl">
+        <div className="flex p-1 bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-2xl w-fit relative overflow-hidden shadow-2xl">
             <motion.div
                 layoutId="active-scenario"
                 className="absolute inset-1 bg-gradient-to-tr from-white/[0.08] to-white/[0.02] border border-white/10 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.05)]"
-                animate={{
-                    left: active === "A" ? 4 : "50%",
+                style={{
                     width: "calc(50% - 4px)",
+                    left: active === "A" ? "4px" : "4px" // Keep static left
                 }}
-                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                animate={{
+                    x: active === "A" ? 0 : "100%",
+                }}
+                transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
             />
 
             <button

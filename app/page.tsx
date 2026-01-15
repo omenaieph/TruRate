@@ -168,8 +168,8 @@ export default function TruRatePage() {
     <div className="min-h-screen bg-[#09090b] text-zinc-400 font-sans selection:bg-emerald-500/30">
       {/* Precision Background Glow */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/[0.03] blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/[0.02] blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/[0.03] blur-[60px] md:blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/[0.02] blur-[60px] md:blur-[120px] rounded-full" />
       </div>
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 md:py-24 relative z-10">
@@ -322,12 +322,14 @@ export default function TruRatePage() {
           </div>
 
           <div className="lg:col-span-12 xl:col-span-5 flex flex-col gap-6 lg:sticky lg:top-12">
-            <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 px-1 p-2 rounded-xl transition-all duration-500 ${guideMode ? "bg-blue-500/5 ring-1 ring-blue-500/30" : ""}`}>
-              <div className="space-y-0.5">
+            <div className={`flex flex-col items-center md:flex-row md:items-center justify-between gap-4 px-1 p-2 rounded-xl transition-all duration-500 ${guideMode ? "bg-blue-500/5 ring-1 ring-blue-500/30" : ""}`}>
+              <div className="space-y-0.5 text-center md:text-left">
                 <h2 className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.4em]">Financial Analysis</h2>
                 {guideMode && <p className="text-[8px] text-blue-400 font-bold uppercase tracking-wider">Compare different financial outcomes</p>}
               </div>
-              <ScenarioSwitcher active={activeScenario} onChange={setActiveScenario} />
+              <div className="w-full flex justify-center md:w-auto md:justify-end">
+                <ScenarioSwitcher active={activeScenario} onChange={setActiveScenario} />
+              </div>
             </div>
 
             <AnalysisTabs active={activeTab} onChange={setActiveTab} />
@@ -684,28 +686,33 @@ export default function TruRatePage() {
             </div>
 
             <div className="bg-zinc-900/20 rounded-3xl border border-white/5 p-8 md:p-12 space-y-8 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/[0.02] blur-3xl -mr-32 -mt-32 rounded-full" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/[0.02] blur-2xl md:blur-3xl -mr-32 -mt-32 rounded-full" />
 
               <div className="space-y-4">
-                <h3 className="text-2xl font-bold text-white tracking-tighter">How to Calculate Your Minimum Day Rate</h3>
+                <h3 className="text-2xl font-bold text-white tracking-tighter text-center">How to Calculate Your Minimum Day Rate</h3>
                 <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl">
                   To maintain your current standard of living as a freelancer, you must calculate your <span className="text-white">Adjusted Net Target</span>. The formula used in this model is:
                 </p>
               </div>
 
-              <div className="bg-zinc-950/80 border border-emerald-500/10 rounded-2xl p-8 md:p-12 text-center backdrop-blur-sm shadow-2xl relative group">
+              <div className="bg-zinc-950/80 border border-emerald-500/10 rounded-2xl p-6 md:p-12 text-center backdrop-blur-sm shadow-2xl relative group overflow-hidden sm:overflow-visible">
                 <div className="absolute inset-0 bg-emerald-500/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="font-mono text-base md:text-lg font-medium tracking-tight relative z-10 text-emerald-400/90">
-                  <span className="block mb-8 text-zinc-500 text-[10px] uppercase tracking-[0.4em] border-b border-white/5 pb-2 w-max mx-auto font-sans">The Rate Architecture</span>
+                <div className="font-mono text-[10px] md:text-lg font-medium tracking-tight relative z-10 text-emerald-400/90">
+                  <div className="flex justify-center mb-10">
+                    <span className="inline-block text-zinc-500 text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] border-b border-white/5 pb-2 font-sans px-4 text-center">The Rate Architecture</span>
+                  </div>
 
-                  <div className="flex flex-col items-center justify-center gap-6">
-                    <div className="border-b-2 border-emerald-500/20 px-8 pb-3 text-lg md:text-xl">
+                  <div className="flex flex-col items-center justify-center gap-6 md:gap-8">
+                    <div className="border-b-2 border-emerald-500/20 px-2 md:px-8 pb-4 text-[12px] md:text-xl whitespace-nowrap">
                       Target Net + Annual Expenses
                     </div>
-                    <div className="flex items-center justify-center gap-6 px-6 text-zinc-400 text-sm md:text-base">
-                      <span className="font-sans">(1 - Tax Rate)</span>
-                      <span className="text-emerald-500/40 font-sans text-lg">×</span>
-                      <span className="font-sans">(Billable Weeks × Weekly Hours)</span>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-2 md:px-6 text-zinc-400 text-[10px] md:text-base">
+                      <div className="flex items-center gap-4">
+                        <span className="font-sans">(1 - Tax Rate)</span>
+                        <span className="text-emerald-500/40 font-sans text-lg hidden sm:inline">×</span>
+                      </div>
+                      <div className="sm:hidden text-emerald-500/30 text-xs">×</div>
+                      <span className="font-sans text-center">(Billable Weeks × Weekly Hours)</span>
                     </div>
                   </div>
                 </div>
