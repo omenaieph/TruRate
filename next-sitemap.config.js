@@ -1,10 +1,10 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://thetrurate.org',
+  siteUrl: 'https://www.trueratecalculator.org',
   generateRobotsTxt: true,
   robotsTxtOptions: {
     additionalSitemaps: [
-      'https://thetrurate.org/sitemap.xml',
+      'https://www.trueratecalculator.org/sitemap.xml',
     ],
   },
 }
